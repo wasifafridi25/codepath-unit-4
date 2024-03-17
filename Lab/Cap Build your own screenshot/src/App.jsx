@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import "./App.css";
 import APIForm from "./components/APIForm";
+import Gallery from "./components/Gallery";
 const ACCESS_KEY = import.meta.env.VITE_APP_ACCESS_KEY;
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   });
 
   const [currentImage, setCurrentImage] = useState(null);
+  const [prevImages, setPrevImages] = useState([]);
 
   const submitForm = () => {
     let defaultValues = {
@@ -57,6 +59,7 @@ function App() {
       alert("Oops! Something went wrong with that query, let's try again!");
     } else {
       setCurrentImage(json.url);
+      setPrevImages(images => [...images, json.url])
       reset();
     }
   };
@@ -118,6 +121,8 @@ function App() {
       </div>
 
       <br></br>
+      <h2>All the previous images:</h2>
+      { prevImages && prevImages.length > 0 && <Gallery prevImages={prevImages}/>}
     </div>
   );
 }
